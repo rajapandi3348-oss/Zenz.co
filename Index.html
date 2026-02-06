@@ -1,2 +1,1532 @@
-# Zenz.co
-Next-generation social media 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZenZ — Next-Generation Social Media</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --zenz-deep-purple: #0a0514;
+            --zenz-purple: #1a0f2e;
+            --zenz-neon-pink: #e91e8c;
+            --zenz-neon-purple: #8b5cf6;
+            --zenz-neon-blue: #3b82f6;
+            --zenz-neon-cyan: #06b6d4;
+            --zenz-glass: rgba(255, 255, 255, 0.03);
+            --zenz-glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--zenz-deep-purple);
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated gradient background */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(233, 30, 140, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 70%),
+                linear-gradient(135deg, #0a0514 0%, #1a0f2e 50%, #0a0514 100%);
+            z-index: -2;
+            animation: gradientMove 20s ease-in-out infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(3deg); }
+        }
+
+        /* Grid overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(233, 30, 140, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: -1;
+            animation: gridMove 25s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(60px); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--zenz-neon-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--zenz-neon-cyan);
+            animation: floatUp 12s infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(10, 5, 20, 0.95), transparent);
+            backdrop-filter: blur(20px);
+        }
+
+        /* Official Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* Infinity Loop SVG */
+        .infinity-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5)) drop-shadow(0 0 20px rgba(233, 30, 140, 0.3)); }
+            50% { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.8)) drop-shadow(0 0 30px rgba(233, 30, 140, 0.5)); }
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: none;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--zenz-neon-pink), var(--zenz-neon-purple));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, var(--zenz-neon-pink), var(--zenz-neon-purple));
+            color: white;
+            padding: 12px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(233, 30, 140, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 30px rgba(233, 30, 140, 0.6);
+        }
+
+        .btn-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-nav:hover::before {
+            left: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 140px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--zenz-glass);
+            border: 1px solid var(--zenz-glass-border);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: var(--zenz-neon-cyan);
+            margin-bottom: 32px;
+            backdrop-filter: blur(10px);
+            width: fit-content;
+            animation: glow 2s ease-in-out infinite;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.6); }
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--zenz-neon-cyan);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 10px var(--zenz-neon-cyan);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.3); }
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--zenz-neon-pink), var(--zenz-neon-purple), var(--zenz-neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientText 4s ease infinite;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 90%;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--zenz-neon-pink), var(--zenz-neon-purple));
+            color: white;
+            padding: 18px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+            box-shadow: 0 10px 35px rgba(233, 30, 140, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 45px rgba(233, 30, 140, 0.55);
+        }
+
+        .btn-secondary {
+            background: var(--zenz-glass);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            border: 1px solid var(--zenz-glass-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+        }
+
+        /* 3D Phone Mockup */
+        .phone-showcase {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+        }
+
+        .phone-container {
+            position: relative;
+            width: 300px;
+            height: 600px;
+            transform-style: preserve-3d;
+            animation: phoneFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes phoneFloat {
+            0%, 100% { transform: translateY(0) rotateY(-8deg) rotateX(5deg); }
+            50% { transform: translateY(-25px) rotateY(8deg) rotateX(5deg); }
+        }
+
+        .phone {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 45px;
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 
+                0 0 0 2px rgba(139, 92, 246, 0.3),
+                0 30px 60px rgba(0,0,0,0.5),
+                0 0 80px rgba(139, 92, 246, 0.25);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(233,30,140,0.08) 50%, transparent 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 35px;
+            background: #0a0514;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            padding: 60px 24px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: linear-gradient(180deg, #1a0f2e 0%, #0a0514 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* App Interface */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .app-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, var(--zenz-neon-pink), var(--zenz-neon-purple));
+            border-radius: 50%;
+        }
+
+        .app-time {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+        }
+
+        .story-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 5px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .story-row::-webkit-scrollbar { display: none; }
+
+        .story {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--zenz-neon-pink), var(--zenz-neon-purple), var(--zenz-neon-cyan));
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 5px 20px rgba(233, 30, 140, 0.3);
+        }
+
+        .story-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2d1b4e, #1a0f2e);
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .feed-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 18px;
+            backdrop-filter: blur(10px);
+        }
+
+        .feed-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .feed-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--zenz-neon-cyan), var(--zenz-neon-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .feed-info {
+            flex: 1;
+        }
+
+        .feed-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            display: block;
+        }
+
+        .feed-handle {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .feed-content {
+            height: 140px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(233, 30, 140, 0.15));
+            border-radius: 16px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feed-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .feed-actions {
+            display: flex;
+            gap: 20px;
+            font-size: 20px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .feed-actions span {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .feed-actions span:hover {
+            color: var(--zenz-neon-pink);
+            transform: scale(1.1);
+        }
+
+        .phone-nav {
+            position: absolute;
+            bottom: 25px;
+            left: 24px;
+            right: 24px;
+            height: 70px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            font-size: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .nav-item {
+            color: rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--zenz-neon-pink);
+            transform: scale(1.2);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--zenz-neon-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--zenz-neon-pink);
+        }
+
+        .add-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--zenz-neon-pink), var(--zenz-neon-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 5px 20px rgba(233, 30, 140, 0.5);
+            margin-top: -20px;
+            border: 3px solid #0a0514;
+        }
+
+        /* Holographic ring */
+        .hologram-ring {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: ringPulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .hologram-ring:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            animation-delay: 1s;
+            border-color: rgba(233, 30, 140, 0.15);
+        }
+
+        .hologram-ring:nth-child(3) {
+            width: 600px;
+            height: 600px;
+            animation-delay: 2s;
+            border-color: rgba(6, 182, 212, 0.1);
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 100px 24px;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-tag {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--zenz-neon-cyan);
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+
+        .section-tag::before,
+        .section-tag::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--zenz-neon-cyan));
+        }
+
+        .section-tag::after {
+            background: linear-gradient(90deg, var(--zenz-neon-cyan), transparent);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 17px;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--zenz-glass);
+            border: 1px solid var(--zenz-glass-border);
+            border-radius: 28px;
+            padding: 36px 28px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--zenz-neon-pink), var(--zenz-neon-purple), var(--zenz-neon-cyan));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 28px;
+            background: linear-gradient(135deg, rgba(233,30,140,0.15), rgba(139,92,246,0.15));
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .feature-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            letter-spacing: -0.5px;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+        }
+
+        /* App Showcase */
+        .showcase {
+            padding: 100px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .showcase-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 60%);
+            filter: blur(80px);
+            z-index: -1;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .showcase-content h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .showcase-content p {
+            color: rgba(255,255,255,0.7);
+            font-size: 17px;
+            line-height: 1.9;
+            margin-bottom: 36px;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .feature-check {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--zenz-neon-pink), var(--zenz-neon-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px rgba(233, 30, 140, 0.4);
+        }
+
+        .phones-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            position: relative;
+        }
+
+        .phone-mini {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 36px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            aspect-ratio: 9/19;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .phone-mini:hover {
+            transform: translateY(-10px);
+        }
+
+        .phone-mini:nth-child(2) {
+            transform: translateY(50px);
+        }
+
+        .phone-mini:nth-child(2):hover {
+            transform: translateY(40px);
+        }
+
+        .mini-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 18px;
+            background: #0a0514;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            z-index: 5;
+        }
+
+        .phone-mini-screen {
+            width: 100%;
+            height: 100%;
+            padding: 35px 10px 10px;
+        }
+
+        /* QR Section */
+        .qr-section {
+            padding: 100px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .qr-container {
+            background: var(--zenz-glass);
+            border: 1px solid var(--zenz-glass-border);
+            border-radius: 40px;
+            padding: 50px 32px;
+            max-width: 420px;
+            margin: 0 auto;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+
+        .qr-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(139,92,246,0.1), transparent, rgba(233,30,140,0.1), transparent);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .qr-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 35px;
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+
+        .qr-code {
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(0deg, #0a0514 0px, #0a0514 8px, transparent 8px, transparent 16px),
+                repeating-linear-gradient(90deg, #0a0514 0px, #0a0514 8px, transparent 8px, transparent 16px);
+            background-size: 16px 16px;
+            background-position: center;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.4), transparent);
+            animation: qrPulse 2.5s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes qrPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+        }
+
+        .qr-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .qr-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .qr-text {
+            color: rgba(255,255,255,0.6);
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 80px 24px 50px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo-icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .footer-logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        .footer-tagline {
+            color: rgba(255,255,255,0.5);
+            font-size: 15px;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--zenz-neon-pink), var(--zenz-neon-purple));
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--zenz-glass);
+            border: 1px solid var(--zenz-glass-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .social-icon:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--zenz-neon-cyan);
+            transform: translateY(-5px);
+            color: white;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+        }
+
+        .footer-bottom {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 72px; }
+            .section-title { font-size: 48px; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .showcase-grid { grid-template-columns: 1fr 1fr; }
+            .nav-link { display: block; }
+            .hero-cta { flex-direction: row; }
+            .hero { padding: 160px 48px 100px; }
+        }
+
+        @media (min-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(3, 1fr); }
+            .hero h1 { font-size: 84px; }
+        }
+
+        /* Scan line effect */
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--zenz-neon-cyan), transparent);
+            opacity: 0.15;
+            animation: scan 10s linear infinite;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100vh); }
+            100% { transform: translateY(100vh); }
+        }
+
+        /* Loading animation */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--zenz-neon-pink), var(--zenz-neon-purple), var(--zenz-neon-cyan));
+            z-index: 10000;
+            animation: loading 2s ease-out forwards;
+        }
+
+        @keyframes loading {
+            0% { width: 0; }
+            100% { width: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Bar -->
+    <div class="loading-bar"></div>
+
+    <!-- Effects -->
+    <div class="gradient-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+    <div class="scan-line"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#" class="logo">
+            <div class="logo-icon">
+                <svg class="infinity-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="infinityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#e91e8c;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- Infinity Loop -->
+                    <path d="M30,50 C30,35 40,25 50,25 C60,25 70,35 70,50 C70,65 60,75 50,75 C40,75 30,65 30,50" 
+                          stroke="url(#infinityGradient)" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+                    <path d="M70,50 C70,35 80,25 90,25 C95,25 95,35 90,35 C85,35 85,45 90,50 C95,55 95,65 90,75 C85,75 70,65 70,50" 
+                          stroke="url(#infinityGradient)" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+                    <path d="M30,50 C30,65 20,75 10,75 C5,75 5,65 10,65 C15,65 15,55 10,50 C5,45 5,35 10,25 C15,25 30,35 30,50" 
+                          stroke="url(#infinityGradient)" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+                </svg>
+            </div>
+            <span class="logo-text">ZenZ</span>
+        </a>
+        <div class="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#showcase" class="nav-link">App</a>
+            <a href="#download" class="btn-nav">Get Early Access</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            Next Generation Social Media
+        </div>
+        <h1>
+            Create.<br>
+            <span>Connect.</span><br>
+            Experience.
+        </h1>
+        <p class="hero-subtitle">
+            ZenZ is where you share your voice, mood, and moments — authentic and unfiltered. Join the future of social connection.
+        </p>
+        <div class="hero-cta">
+            <a href="#" class="btn-primary">Sign Up Free</a>
+            <a href="#" class="btn-secondary">Explore Demo</a>
+        </div>
+
+        <!-- 3D Phone Mockup -->
+        <div class="phone-showcase">
+            <div class="hologram-ring"></div>
+            <div class="hologram-ring"></div>
+            <div class="hologram-ring"></div>
+            <div class="phone-container">
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <span class="app-title">ZenZ Moments</span>
+                            <span class="app-time">9:41</span>
+                        </div>
+                        <div class="story-row">
+                            <div class="story"><div class="story-inner">👤</div></div>
+                            <div class="story"><div class="story-inner">🎨</div></div>
+                            <div class="story"><div class="story-inner">🎵</div></div>
+                            <div class="story"><div class="story-inner">✈️</div></div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-header">
+                                <div class="feed-avatar">👩</div>
+                                <div class="feed-info">
+                                    <span class="feed-name">samantha</span>
+                                    <span class="feed-handle">@samanthaa</span>
+                                </div>
+                            </div>
+                            <div class="feed-content">🌅</div>
+                            <div class="feed-actions">
+                                <span>♥ 1.2K</span>
+                                <span>💬 256</span>
+                                <span>↗ 78</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phone-nav">
+                        <span class="nav-item active">⌂</span>
+                        <span class="nav-item">🔍</span>
+                        <span class="add-btn">+</span>
+                        <span class="nav-item">✉</span>
+                        <span class="nav-item">👤</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header reveal">
+            <div class="section-tag">Why ZenZ Stands Out</div>
+            <h2 class="section-title">The Social Platform for<br>Real Expression</h2>
+            <p class="section-subtitle">Authentic connections, creative tools, and experiences that matter in the digital age.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">⚡</div>
+                <h3>ZenZ Moments</h3>
+                <p>Share voice, mood, and moments instantly. AI-powered suggestions help you express exactly what you feel, when you feel it.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🎙️</div>
+                <h3>Voice Expression</h3>
+                <p>Post voice notes that capture emotion and tone. Sometimes text isn't enough to convey what your voice can.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">📸</div>
+                <h3>Media Sharing</h3>
+                <p>Share photos and videos with precision editing tools. Every moment deserves to look as good as it felt.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">💜</div>
+                <h3>Meaningful Engagement</h3>
+                <p>Quality interactions over vanity metrics. Connect deeply with people who matter, not just numbers.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">👤</div>
+                <h3>Smart Profiles</h3>
+                <p>AI-curated profiles that evolve with you. Your digital identity, authentically and beautifully represented.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🌐</div>
+                <h3>Global Community</h3>
+                <p>Connect with creators and thinkers worldwide. Meaningful connections know no borders.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Showcase -->
+    <section class="showcase" id="showcase">
+        <div class="showcase-bg"></div>
+        <div class="showcase-grid">
+            <div class="showcase-content reveal">
+                <h2>Built for Everyone Who Wants More Than Just Scrolling</h2>
+                <p>Whether you're a creator building your brand, a startup fostering community, or someone who craves authentic connection — ZenZ is your platform.</p>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Creators & Influencers — Monetize your authentic voice</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Startups — Build engaged communities from day one</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Communities — Foster genuine discussions and bonds</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">✓</div>
+                        <span>Everyday Users — Share without algorithmic pressure</span>
+                    </div>
+                </div>
+            </div>
+            <div class="phones-grid reveal">
+                <div class="phone-mini">
+                    <div class="mini-notch"></div>
+                    <div class="phone-mini-screen">
+                        <div style="height: 100%; background: linear-gradient(135deg, rgba(233,30,140,0.3), rgba(139,92,246,0.3)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 40px;">🎨</div>
+                    </div>
+                </div>
+                <div class="phone-mini">
+                    <div class="mini-notch"></div>
+                    <div class="phone-mini-screen">
+                        <div style="height: 100%; background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 40px;">🎵</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QR Download Section -->
+    <section class="qr-section" id="download">
+        <div class="section-header reveal">
+            <div class="section-tag">Get The App</div>
+            <h2 class="section-title">Scan to Download<br>The Future</h2>
+        </div>
+        <div class="qr-container reveal">
+            <div class="qr-wrapper">
+                <div class="qr-glow"></div>
+                <div class="qr-code"></div>
+                <div class="qr-logo">
+                    <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+                        <path d="M30,50 C30,35 40,25 50,25 C60,25 70,35 70,50 C70,65 60,75 50,75 C40,75 30,65 30,50" 
+                              stroke="url(#infinityGradient)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <path d="M70,50 C70,35 80,25 90,25 C95,25 95,35 90,35 C85,35 85,45 90,50 C95,55 95,65 90,75 C85,75 70,65 70,50" 
+                              stroke="url(#infinityGradient)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <path d="M30,50 C30,65 20,75 10,75 C5,75 5,65 10,65 C15,65 15,55 10,50 C5,45 5,35 10,25 C15,25 30,35 30,50" 
+                              stroke="url(#infinityGradient)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="infinityGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#e91e8c;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            <h3 class="qr-title">ZenZ Connect Experience</h3>
+            <p class="qr-text">Point your camera at the QR code to download the app. Available on iOS and Android.</p>
+            <a href="#" class="btn-primary" style="display: inline-block; padding: 16px 36px;">Download Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">
+            <svg class="footer-logo-icon" viewBox="0 0 100 100" fill="none">
+                <path d="M30,50 C30,35 40,25 50,25 C60,25 70,35 70,50 C70,65 60,75 50,75 C40,75 30,65 30,50" 
+                      stroke="url(#footerGradient)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path d="M70,50 C70,35 80,25 90,25 C95,25 95,35 90,35 C85,35 85,45 90,50 C95,55 95,65 90,75 C85,75 70,65 70,50" 
+                      stroke="url(#footerGradient)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path d="M30,50 C30,65 20,75 10,75 C5,75 5,65 10,65 C15,65 15,55 10,50 C5,45 5,35 10,25 C15,25 30,35 30,50" 
+                      stroke="url(#footerGradient)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <defs>
+                    <linearGradient id="footerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e91e8c;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span class="footer-logo-text">ZenZ</span>
+        </div>
+        <div class="footer-tagline">Next-Generation Social Media</div>
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#">Demo</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <div class="social-links">
+            <div class="social-icon">📧</div>
+            <div class="social-icon">📷</div>
+            <div class="social-icon">💼</div>
+            <div class="social-icon">🐦</div>
+        </div>
+        <div class="footer-bottom">© 2024 ZenZ. The Future is Now.</div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (12 + Math.random() * 8) + 's';
+                
+                // Random colors
+                const colors = ['#e91e8c', '#8b5cf6', '#06b6d4'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.boxShadow = `0 0 15px ${particle.style.background}`;
+                
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Parallax effect for phone
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const phone = document.querySelector('.phone-container');
+            if (phone && scrolled < window.innerHeight) {
+                const rotation = scrolled * 0.02;
+                phone.style.transform = `translateY(${scrolled * 0.3}px) rotateY(${rotation}deg) rotateX(5deg)`;
+            }
+        });
+
+        // Logo glow animation enhancement
+        const logo = document.querySelector('.infinity-svg');
+        setInterval(() => {
+            logo.style.filter = `drop-shadow(0 0 ${15 + Math.random() * 10}px rgba(139, 92, 246, 0.8)) drop-shadow(0 0 ${25 + Math.random() * 15}px rgba(233, 30, 140, 0.5))`;
+        }, 2000);
+    </script>
+</body>
+</html>
